@@ -1,0 +1,23 @@
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.mission-card {
+  height: 100%;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #b00020;
+}
+
+a {
+  word-break: break-all;
+}

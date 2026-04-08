@@ -1,0 +1,15 @@
+<div class="filter-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Launch Year</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="e.g. 2018"
+      [(ngModel)]="year"
+      (keyup.enter)="applyFilter()"
+    />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="applyFilter()">Search</button>
+  <button mat-stroked-button (click)="clearFilter()">Clear</button>
+</div>
