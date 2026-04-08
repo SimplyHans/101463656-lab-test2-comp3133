@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/101463656-lab-test2-comp3133/browser",
+  "outputDirectory": "dist/101463656-lab-test2-comp3133",
   "routes": [
     {
       "src": "/(.*)",
