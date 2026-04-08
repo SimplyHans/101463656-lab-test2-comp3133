@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-missionfilter',
+  standalone: true,
   imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
   templateUrl: './missionfilter.html',
   styleUrl: './missionfilter.scss',

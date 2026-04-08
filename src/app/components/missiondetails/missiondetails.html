@@ -1,46 +1,65 @@
-@if (error) {
-  <p class="error-message">{{ error }}</p>
-} @else if (mission) {
-  <mat-card class="details-card">
+<div *ngIf="mission; else loadingOrError">
+
+  <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ mission.mission_name }}</mat-card-title>
+      <mat-card-title>
+        {{ mission.flight_number }} - {{ mission.mission_name }}
+      </mat-card-title>
+
       <mat-card-subtitle>
-        Flight #{{ mission.flight_number }} | {{ mission.launch_year }}
+        Launch Year: {{ mission.launch_year }}
       </mat-card-subtitle>
     </mat-card-header>
 
     <img
       mat-card-image
-      [src]="mission.links.mission_patch_small || 'https://via.placeholder.com/250x180?text=No+Image'"
+      class="mission-img"
+      [src]="mission.links?.mission_patch_small || 'https://placehold.co/250x180?text=No+Image'"
       [alt]="mission.mission_name"
     />
 
     <mat-card-content>
       <p><strong>Details:</strong> {{ mission.details || 'No details available.' }}</p>
-      <p><strong>Rocket Name:</strong> {{ mission.rocket.rocket_name }}</p>
-      <p><strong>Rocket Type:</strong> {{ mission.rocket.rocket_type }}</p>
+
+      <p><strong>Rocket Name:</strong> {{ mission.rocket?.rocket_name }}</p>
+      <p><strong>Rocket Type:</strong> {{ mission.rocket?.rocket_type }}</p>
+
       <p>
         <strong>Article:</strong>
-        <a [href]="mission.links.article_link" target="_blank">
-          {{ mission.links.article_link || 'N/A' }}
+        <a [href]="mission.links?.article_link" target="_blank">
+          {{ mission.links?.article_link || 'N/A' }}
         </a>
       </p>
+
       <p>
         <strong>Wikipedia:</strong>
-        <a [href]="mission.links.wikipedia" target="_blank">
-          {{ mission.links.wikipedia || 'N/A' }}
+        <a [href]="mission.links?.wikipedia" target="_blank">
+          {{ mission.links?.wikipedia || 'N/A' }}
         </a>
       </p>
+
       <p>
         <strong>Video:</strong>
-        <a [href]="mission.links.video_link" target="_blank">
-          {{ mission.links.video_link || 'N/A' }}
+        <a [href]="mission.links?.video_link" target="_blank">
+          {{ mission.links?.video_link || 'N/A' }}
         </a>
       </p>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-stroked-button routerLink="/">Back to Missions</button>
+      <button mat-raised-button color="primary" routerLink="/">
+        Back
+      </button>
     </mat-card-actions>
+
   </mat-card>
-}
+
+</div>
+
+<ng-template #loadingOrError>
+  <p *ngIf="error; else loading">{{ error }}</p>
+
+  <ng-template #loading>
+    <p>Loading mission...</p>
+  </ng-template>
+</ng-template>

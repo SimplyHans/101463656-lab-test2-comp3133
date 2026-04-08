@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -11,6 +11,7 @@ import { MissionfilterComponent } from '../missionfilter/missionfilter';
 
 @Component({
   selector: 'app-missionlist',
+  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
@@ -27,7 +28,11 @@ export class MissionlistComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private readonly spacexApiService: SpacexApiService) {}
+  constructor(
+    private readonly spacexApiService: SpacexApiService,
+    private readonly cd: ChangeDetectorRef,
+    private readonly zone: NgZone
+  ) {}
 
   ngOnInit(): void {
     this.loadMissions();
@@ -41,14 +46,19 @@ export class MissionlistComponent implements OnInit {
 
     this.loading = true;
     this.error = '';
+
     this.spacexApiService.getMissionsByYear(year).subscribe({
       next: (missions) => {
-        this.missions = missions;
-        this.loading = false;
+        this.zone.run(() => {
+          this.missions = missions;
+          this.loading = false;
+        });
       },
       error: () => {
-        this.error = 'Unable to fetch missions for that year.';
-        this.loading = false;
+        this.zone.run(() => {
+          this.error = 'Unable to fetch missions for that year.';
+          this.loading = false;
+        });
       },
     });
   }
@@ -56,14 +66,19 @@ export class MissionlistComponent implements OnInit {
   private loadMissions(): void {
     this.loading = true;
     this.error = '';
+
     this.spacexApiService.getMissions().subscribe({
       next: (missions) => {
-        this.missions = missions;
-        this.loading = false;
+        this.zone.run(() => {
+          this.missions = missions;
+          this.loading = false;
+        });
       },
       error: () => {
-        this.error = 'Unable to fetch missions.';
-        this.loading = false;
+        this.zone.run(() => {
+          this.error = 'Unable to fetch missions.';
+          this.loading = false;
+        });
       },
     });
   }

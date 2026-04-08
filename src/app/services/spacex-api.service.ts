@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Mission } from '../models/mission.model';
 
@@ -20,7 +20,20 @@ export class SpacexApiService {
     return this.http.get<Mission[]>(`${this.baseUrl}?launch_year=${year}`);
   }
 
-  getMissionByFlightNumber(flightNumber: string): Observable<Mission> {
-    return this.http.get<Mission>(`${this.baseUrl}/${flightNumber}`);
-  }
+ 
+getMissionByFlightNumber(flightNumber: number): Observable<Mission | null> {
+  return this.http.get<Mission[]>(this.baseUrl).pipe(
+    map((missions) => {
+      console.log('ALL MISSIONS COUNT:', missions.length);
+
+      const mission = missions.find(
+        (m: any) => Number(m.flight_number) === Number(flightNumber)
+      );
+
+      console.log('FOUND MISSION:', mission);
+
+      return mission || null;
+    })
+  );
+}
 }
